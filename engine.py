@@ -1,5 +1,6 @@
 import math
 from kandinsky import * 
+from time import *
 
 
 width,height = 320,240
@@ -10,6 +11,8 @@ near = 0.1
 far = 1000
 f = 1/math.tan(fov/2)
 q = far/(far-near)
+
+points = []
 
 
 black = color(0,0,0)
@@ -71,12 +74,22 @@ def drawTriangle(x1,y1,x2,y2,x3,y3):
 
 def point(x,y):
     set_pixel(x,y,black)
+    if not x in points:
+        points.append(x)
+    
     #points.append([x,y])
 
 def fill(color):
     for x in range(width):
         for y in range(height):
             set_pixel(x,y,color)
+
+def clear():
+    points.sort()
+    for x in points:
+        for y in range(height):
+            set_pixel(x,y,white)
+
 
 class Vec3D:
     def __init__(self):
@@ -158,8 +171,9 @@ matProj.m[2][3] = 1
 matProj.m[3][3] = 0
 
 theta =0
+fill(white)
 while True:
-    fill(white)
+    clear()
     theta += 0.4
     matRotX = Mat4x4()
     matRotZ = Mat4x4()
@@ -179,12 +193,8 @@ while True:
     matRotZ.m[3][3] = 1;
 
     for tri in meshCube.tris:
-        
-
-        
         triRotated = Triangle()
         triPojected = Triangle()
-
 
         triRotated.p.append(matRotX.multiplyMatrixVector(matRotZ.multiplyMatrixVector(tri.p[0])))
         triRotated.p.append(matRotX.multiplyMatrixVector(matRotZ.multiplyMatrixVector(tri.p[1])))
@@ -208,5 +218,5 @@ while True:
         triPojected.p[1].x *= 0.5 * width; triPojected.p[1].y *= 0.5 * height
         triPojected.p[2].x *= 0.5 * width; triPojected.p[2].y *= 0.5 * height
 
-
         drawTriangle(int(triPojected.p[0].x),int(triPojected.p[0].y),int(triPojected.p[1].x),int(triPojected.p[1].y),int(triPojected.p[2].x),int(triPojected.p[2].y))
+    sleep(0.2)
