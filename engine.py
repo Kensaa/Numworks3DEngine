@@ -74,8 +74,8 @@ def drawTriangle(x1,y1,x2,y2,x3,y3):
 
 def point(x,y):
     set_pixel(x,y,black)
-    if not x in points:
-        points.append(x)
+    #if not x in points:
+    #    points.append(x)
     
     #points.append([x,y])
 
@@ -84,12 +84,13 @@ def fill(color):
         for y in range(height):
             set_pixel(x,y,color)
 
+#def clear():
+#    points.sort()
+#    for x in points:
+#        for y in range(height):
+#            set_pixel(x,y,white)
 def clear():
-    points.sort()
-    for x in points:
-        for y in range(height):
-            set_pixel(x,y,white)
-
+  fill_rect(0,0, width,height,white)
 
 class Vec3D:
     def __init__(self):
@@ -219,4 +220,4 @@ while True:
         triPojected.p[2].x *= 0.5 * width; triPojected.p[2].y *= 0.5 * height
 
         drawTriangle(int(triPojected.p[0].x),int(triPojected.p[0].y),int(triPojected.p[1].x),int(triPojected.p[1].y),int(triPojected.p[2].x),int(triPojected.p[2].y))
-    sleep(0.2)
+    #sleep(0.2)
